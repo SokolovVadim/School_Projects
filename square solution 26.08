@@ -1,0 +1,65 @@
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+void ad();
+void discr(float first, float second, float fird);
+void sol_for_two(float discr, float first, float second);
+void sol_for_one(float second, float fird);
+
+int main()
+{
+	register float first, second, fird, sol;
+
+	ad();
+	
+	cout << "input first cofficients:\t";
+	cin >> first;
+	
+	/*while (!isdigit(char(first)))
+	{
+		cout << "Try again\n";
+		cin >> first;
+	}*/
+
+	cout << "input second cofficients:\t";
+	cin >> second;
+
+	cout << "input fird cofficients:\t\t";
+	cin >> fird;
+
+	discr(first, second, fird);
+
+	system("pause");
+}
+
+void ad()
+{
+	cout << "This is a programm to solve an equation" << endl;
+	cout << "If u want to do this, please give three cofficients with \"enter\":" << endl;
+}
+
+void discr(float first, float second, float fird)
+{
+	float discrim;
+	discrim = pow(second, 2) - 4 * first*second;
+	first ? sol_for_two(discrim, first, second): sol_for_one(second, fird);
+}
+
+void sol_for_two(float discr, float first, float second)
+{
+	float solf, sols;
+	float sqr_d = sqrt(discr);
+	solf = (-second + sqr_d) / (2 * first);
+	sols = (-second - sqr_d) / (2 * first);
+	if (discr < 0)
+		cout << "Null solutions" << endl;
+	else 
+		discr ? cout << "first solution: " << solf << endl << "second solution: " << sols << endl : cout << ((-second) / (2 * first)) << endl;
+}
+
+void sol_for_one(float second, float fird)
+{
+	float sol = (-fird) / second;
+	cout << sol << endl;
+}
