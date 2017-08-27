@@ -1,0 +1,91 @@
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+void ad();
+void discr(float first, float second, float fird);
+void sol_for_two(float discr, float first, float second);
+void sol_for_one(float second, float fird);
+void check(float fird);
+void ifsecnull(float first, float second);
+///*float*/void button(float simbol);
+
+int main()
+{
+	register float first, second, fird;
+
+	ad();
+	
+	cout << "input first cofficient:\t\t";
+	cin >> first;
+
+	/*if (cin.fail())
+		button(first);*/
+
+	cout << "input second cofficients:\t";
+	cin >> second;
+
+	cout << "input fird cofficients:\t\t";
+	cin >> fird;
+
+	discr(first, second, fird);
+
+	system("pause");
+}
+
+void ad()
+{
+	cout << "This is a programm to solve an equation" << endl;
+	cout << "If u want to do this, please give three cofficients with \"enter\":" << endl;
+}
+
+void discr(float first, float second, float fird)
+{
+	float discrim;
+	discrim = pow(second, 2) - 4 * first*fird;
+	first ? sol_for_two(discrim, first, second): sol_for_one(second, fird);
+}
+
+void sol_for_two(float discr, float first, float second)
+{
+	assert(first != 0);
+	float solf, sols;
+	float sqr_d = sqrt(discr);
+	solf = (-second + sqr_d) / (2 * first);
+	sols = (-second - sqr_d) / (2 * first);
+	if (discr < 0)
+		cout << "Null solutions" << endl;
+	else
+		discr ? cout << "first solution: " << solf << endl << "second solution: " << sols << endl
+		: ifsecnull(first, second);
+}
+
+void sol_for_one(float second, float fird)
+{
+	second ? (cout << ((-fird) / second) << endl) : check(fird);
+}
+
+void check(float fird)
+{
+	if (fird)
+		cout << "Null solutions" << endl;
+	else
+		cout << "Infinituly lots of solutions" << endl;
+}
+
+void ifsecnull(float first, float second)
+{
+	second ? cout << ((-second) / (2 * first)) << endl : cout << 0 << endl;
+}
+
+///*float*/void button(float simbol)
+//{
+//	do
+//	{
+//		cin.clear();
+//		cin.sync();
+//		cin >> simbol;
+//		cout << simbol;	
+//	} while (cin.fail());
+//	/*return simbol;*/
+//}
