@@ -1,0 +1,105 @@
+ #include <iostream>
+ #include <cstdio>
+
+ using namespace std;
+
+
+ FILE *fin, *fout;
+ const int sizepoem = 840;
+ const int sizestr = 50;
+
+ void input(char buff[sizepoem][sizestr], short countstr);
+ int placement(char buffer[]);
+ void search(char buffer[sizestr], char *point, short countstr,
+	 char buff[sizepoem][sizestr], char cont[sizepoem][sizestr], int i);
+ void check(char *point, char *pointan, char buffer[50], int j,
+	 char buff[sizepoem][sizestr], char cont[sizepoem][sizestr], int g);
+ 
+
+int main()
+{ 
+	
+
+	short countstr = 41;// local solution
+	
+
+	char buff[sizepoem][sizestr];
+	char cont[sizepoem][sizestr];
+
+
+	fopen_s(&fin, "INPUT.txt", "r");
+	fopen_s(&fout, "OUTPUT.txt", "w");
+	
+	input(buff, countstr);
+
+	//   buff[countstr - 1][place-1] -> the end of stream
+	
+	for (int i(0); i < countstr; ++i)// strings to up
+	{
+		int place = placement(buff[i]);
+		
+		char *point = &buff[i][place - 1]; // from the end of string
+
+		search(buff[i], point, countstr, buff, cont, i);
+	}
+
+	system("pause");
+}
+
+void input(char buff[sizepoem][sizestr], short countstr)
+{
+	for (int i(0); i < countstr; ++i)
+	{
+		fgets(buff[i], sizestr, fin);
+		fputs(buff[i], fout);
+	}
+}
+
+int placement(char buffer[])
+{
+	int count = 0;
+	while (buffer[count])
+		count++;
+	return count;
+}
+
+void search(char buffer[sizestr], char *point,
+	short countstr, char buff[sizepoem][sizestr],char cont[sizepoem][sizestr], int i)
+{
+	while (point!=buffer)
+	{
+		if (isalpha(*point))
+		{
+			int g(0);
+			for (int j = i+1; j < countstr; ++j)
+			{
+				int loc = placement(buff[j]);
+
+				char *pointan = &buff[j][loc-1];
+
+				while (pointan != &buff[j][0])
+				{
+					check(point, pointan, buffer, j, buff, cont, g);
+				}
+			}
+		}
+		else point--;
+	}
+}
+
+void check(char *point, char *pointan, char buffer[sizestr], int j,
+	char buff[sizepoem][sizestr],char cont[sizepoem][sizestr], int g)
+{
+	if (isalpha(*pointan))
+	{
+		cout << *pointan<<endl;
+		if ((*point == *pointan) && ((*(point-1)) == *(pointan-1)))
+		{
+			strcpy_s(cont[g], buffer);
+			strcpy_s(cont[g + 2], buff[j]);
+			g++;
+		}
+		else 
+			pointan--;
+	}
+}
