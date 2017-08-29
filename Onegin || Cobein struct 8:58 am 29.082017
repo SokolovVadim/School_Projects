@@ -1,0 +1,88 @@
+ #include <iostream>
+ #include <cstdio>
+
+ using namespace std;
+
+
+ FILE *fin, *fout;
+ const int sizepoem = 840;
+ const int sizestr = 50;
+
+ void input(char buff[sizepoem][sizestr], short countstr);
+ short check(char buff[sizestr]);
+
+ struct twolit
+	{
+		char lastlit[sizepoem][2];
+		char str[sizepoem][sizestr];
+	};
+ void search(char buff[sizestr], short last_simbol, twolit poem, short posit);
+
+
+int main()
+{ 
+	
+
+	short countstr = 41;// local solution
+	
+	char buff[sizepoem][sizestr];
+	char cont[sizepoem][sizestr];
+
+
+	fopen_s(&fin, "INPUT.txt", "r");
+	fopen_s(&fout, "OUTPUT.txt", "w");
+	
+	input(buff, countstr);
+
+	twolit poem;// !!!!!!!!!!!!!!!!!
+
+
+	for (short i(0); i < countstr; ++i)
+	{
+		short count = check(buff[i]);
+		fprintf(fout, "%d ", count);
+		fprintf(fout, "%c ", buff[i][count - 2]);
+		search(buff[i], (count-2), poem, i);
+		fprintf(fout, "%c\n", poem.lastlit[i][1]);
+	}
+	
+
+
+	fclose(fin);
+	fclose(fout);
+
+	system("pause");
+}
+
+void input(char buff[sizepoem][sizestr], short countstr)
+{
+	for (int i(0); i < countstr; ++i)
+	{
+		fgets(buff[i], sizestr, fin);
+		/*fputs(buff[i], fout);*/
+	}
+}
+
+short check(char buff[sizestr])
+{
+	short count = 0;
+	while (buff[count])
+		count++;
+	return count;
+}
+
+void search(char buff[sizestr], short last_simbol, twolit poem, short posit /*i*/)
+{
+	bool f = 0;
+	while ((last_simbol > 1)&&(!f))
+	{
+		if ((isalpha(buff[last_simbol])) && (isalpha(buff[last_simbol - 1])))
+		{
+			poem.lastlit[posit][1] = buff[last_simbol];
+			poem.lastlit[posit][0] = buff[last_simbol - 1];
+			cout << poem.lastlit[posit][0]<<ends<<poem.lastlit[posit][1]<<" || ";
+			f = 1;
+		}
+		else last_simbol--;
+	}
+}
