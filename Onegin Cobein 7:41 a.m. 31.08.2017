@@ -1,0 +1,167 @@
+ #include <iostream>
+ #include <cstdio>
+
+ using namespace std;
+
+ 
+ const int Sizepoem = 840;
+ const int Sizestr = 65;
+
+ void input(char buff[Sizepoem][Sizestr], short countstr, FILE *fin);
+ short check(char buff[Sizestr]);
+
+ struct twolit
+	{
+		char lastlit[Sizepoem][2];// two last letters
+		char str[Sizepoem][Sizestr];// strings with this ends
+	};
+ char search(char buff[Sizestr], short last_simbol, twolit poem, short posit,
+	 short flag);
+
+ void swapstr(twolit poem, short countstr, char cont[Sizepoem][Sizestr], FILE *fout);
+
+ void printtext(char buffer[Sizepoem][Sizestr], short countstr);
+ void fprinttext(char buffer[Sizepoem][Sizestr], short countstr, FILE *fout);
+
+ short swapup(short swapper, short upper, bool flag);
+
+
+int main()
+{ 
+	
+	FILE *fin, *fout;
+	short countstr = 71;// local solution
+	
+	char buff[Sizepoem][Sizestr];
+	char cont[Sizepoem][Sizestr];
+
+
+	fopen_s(&fin, "INPUT.txt", "r");
+	fopen_s(&fout, "OUTPUT.txt", "w");
+	
+	twolit poem;// !!!!!!!!!!!!!!!!!
+	
+	input(buff, countstr, fin);
+
+	for (int i = 0; i < countstr; i++) {
+		strcpy_s(poem.str[i], buff[i]);
+	}
+
+	for (short i(0); i < countstr; ++i)
+	{
+		short count = check(buff[i]);
+
+		/*fprintf(fout, "%d ", count);
+		fprintf(fout, "%c ", buff[i][count - 2]);*/
+
+		poem.lastlit[i][0]= search(buff[i], (count - 2), poem, i, 0);
+		poem.lastlit[i][1] = search(buff[i], (count - 2), poem, i, 1);
+
+		/*fprintf(fout, "%c %c\n", poem.lastlit[i][0], poem.lastlit[i][1]);*/
+	}
+
+	swapstr(poem, countstr, cont, fout);
+
+	fclose(fin);
+	fclose(fout);
+}
+
+void input(char buff[Sizepoem][Sizestr], short countstr, FILE *fin)
+{
+	for (int i(0); i < countstr; ++i)
+	{
+		fgets(buff[i], Sizestr, fin);
+		/*fputs(buff[i], fout);*/
+	}
+}
+
+short check(char buff[Sizestr])
+{
+	short count = 0;
+	while (buff[count])
+		count++;
+	return count;
+}
+
+char search(char buff[Sizestr], short last_simbol, twolit poem, short posit,
+	short flag/*0||1*/)
+{
+	while ((last_simbol > 1)||(posit==40))
+	{
+		if ((isalpha(buff[last_simbol])) && (isalpha(buff[last_simbol - 1])))
+		{
+			poem.lastlit[posit][1] = buff[last_simbol];
+			poem.lastlit[posit][0] = buff[last_simbol - 1];
+			break;
+		}
+		else last_simbol--;
+	}
+	if(flag)
+		return poem.lastlit[posit][1];
+	else
+		return poem.lastlit[posit][0];
+}
+
+void swapstr(twolit poem, short countstr, char cont[Sizepoem][Sizestr], FILE *fout)
+{
+	short swapper(0);
+
+	short upper(0);
+
+	bool flag(true);
+
+	for (int i(0); i < countstr; ++i)
+	{
+		for (int j = i+1; j < countstr; ++j)
+		{
+			if ((poem.lastlit[i], poem.lastlit[j])&&
+				(poem.lastlit[i][1] == poem.lastlit[j][1]))
+			{
+				strcpy_s(cont[swapper], poem.str[i]);
+				strcpy_s(cont[swapper+2], poem.str[j]);
+				
+				swapper = swapup(swapper, upper, 1);
+				upper = swapup(swapper, upper, 0);
+				break;
+			}
+
+		}
+	}
+	cout << "\t\t\tNew poem with random rhymes:\n\n";
+	cout <<"\t\t\tAmount of strings: \t"<< swapper << endl << endl;
+
+	//printtext(poem.str, countstr);
+	
+	printtext(cont, swapper);
+	fprinttext(cont, swapper, fout);
+}
+
+void printtext(char buffer[Sizepoem][Sizestr], short countstr)
+{
+	for (short i(0); i < countstr; ++i)
+		cout << buffer[i] << endl;	
+	system("pause");
+}
+
+void fprinttext(char buffer[Sizepoem][Sizestr], short countstr, FILE *fout)
+{
+	for (short i(0); i < countstr; ++i)
+	{
+		fputs(buffer[i], fout);
+	}
+}
+
+short swapup(short swapper, short upper, bool flag)
+{
+	swapper++;
+	upper++;
+	if (upper == 2)// up "p" to write strings from
+	{
+		upper = 0;
+		swapper += 2;
+	}
+	if (flag)
+		return swapper;
+	else
+		return upper;
+}
