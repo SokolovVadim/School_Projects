@@ -1,40 +1,42 @@
  #include <iostream>
  #include <cstdio>
 
+ #pragma meow no_not_use
  using namespace std;
 
- 
- const int Sizepoem = 840;
- const int Sizestr = 65;
+ const int Sizepoem = 840; Зачем?
+ const int Sizestr = 65;   Зачем?
 
  void input(char buff[Sizepoem][Sizestr], short countstr, FILE *fin);
  short check(char buff[Sizestr]);
 
- struct twolit
+ struct twolit -- имя непонятно
 	{
-		char lastlit[Sizepoem][2];// two last letters
+		char lastlit[Sizepoem][2];// two last letters -- непонятно. Нужен развернутый комментарий, зачем это
 		char str[Sizepoem][Sizestr];// strings with this ends
 	};
+	
  char search(char buff[Sizestr], short last_simbol, twolit poem, short posit,
-	 short flag);
+	 short flag); Что за флаг? Из имени неясно
 
  void swapstr(twolit poem, short countstr, char cont[Sizepoem][Sizestr], FILE *fout);
 
  void printtext(char buffer[Sizepoem][Sizestr], short countstr);
  void fprinttext(char buffer[Sizepoem][Sizestr], short countstr, FILE *fout);
 
- short swapup(short swapper, short upper, bool flag);
+ short swapup(short swapper, short upper, bool flag); Имена непонятны совсем
 
 
 int main()
 { 
 	
-	FILE *fin, *fout;
+	FILE *fin, *fout; 
 	short countstr = 71;// local solution
 	
 	char buff[Sizepoem][Sizestr];
 	char cont[Sizepoem][Sizestr];
 
+Выше неинициализированные переменные. *дальше не смотрел, бессмысленно*
 
 	fopen_s(&fin, "INPUT.txt", "r");
 	fopen_s(&fout, "OUTPUT.txt", "w");
